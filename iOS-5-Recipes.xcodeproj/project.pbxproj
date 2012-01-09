@@ -15,6 +15,12 @@
 		129ED09B14BAB87700E3DF63 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 129ED09A14BAB87700E3DF63 /* AppDelegate.m */; };
 		129ED09E14BAB87700E3DF63 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129ED09C14BAB87700E3DF63 /* MainStoryboard.storyboard */; };
 		129ED0A114BAB87700E3DF63 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129ED0A014BAB87700E3DF63 /* ViewController.m */; };
+		129ED0A814BAB8C800E3DF63 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 129ED0A714BAB8C800E3DF63 /* README.txt */; };
+		129ED0D514BAC45F00E3DF63 /* Recipes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129ED0D214BAC45F00E3DF63 /* Recipes.xcdatamodeld */; };
+		129ED0FE14BAC77000E3DF63 /* Ingredient.m in Sources */ = {isa = PBXBuildFile; fileRef = 129ED0FD14BAC77000E3DF63 /* Ingredient.m */; };
+		129ED10114BAC77000E3DF63 /* Recipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 129ED10014BAC77000E3DF63 /* Recipe.m */; };
+		129ED10414BAC83600E3DF63 /* ImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 129ED10314BAC83600E3DF63 /* ImageToDataTransformer.m */; };
+		129ED10714BACAE600E3DF63 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129ED10614BACAE600E3DF63 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,15 +28,24 @@
 		129ED08A14BAB87700E3DF63 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		129ED08C14BAB87700E3DF63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		129ED08E14BAB87700E3DF63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		129ED09214BAB87700E3DF63 /* iOS-5-Recipes-Info.plist */ = {isa = PBXFileReference; path = "iOS-5-Recipes-Info.plist"; sourceTree = "<group>"; };
+		129ED09214BAB87700E3DF63 /* iOS-5-Recipes-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS-5-Recipes-Info.plist"; sourceTree = "<group>"; };
 		129ED09414BAB87700E3DF63 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		129ED09614BAB87700E3DF63 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		129ED09814BAB87700E3DF63 /* iOS-5-Recipes-Prefix.pch */ = {isa = PBXFileReference; path = "iOS-5-Recipes-Prefix.pch"; sourceTree = "<group>"; };
-		129ED09914BAB87700E3DF63 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		129ED09814BAB87700E3DF63 /* iOS-5-Recipes-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-5-Recipes-Prefix.pch"; sourceTree = "<group>"; };
+		129ED09914BAB87700E3DF63 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		129ED09A14BAB87700E3DF63 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		129ED09D14BAB87700E3DF63 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		129ED09F14BAB87700E3DF63 /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		129ED09F14BAB87700E3DF63 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		129ED0A014BAB87700E3DF63 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		129ED0A714BAB8C800E3DF63 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		129ED0D314BAC45F00E3DF63 /* Recipes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Recipes.xcdatamodel; sourceTree = "<group>"; };
+		129ED0FC14BAC77000E3DF63 /* Ingredient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ingredient.h; path = "iOS-5-Recipes/Ingredient.h"; sourceTree = "<group>"; };
+		129ED0FD14BAC77000E3DF63 /* Ingredient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Ingredient.m; path = "iOS-5-Recipes/Ingredient.m"; sourceTree = "<group>"; };
+		129ED0FF14BAC77000E3DF63 /* Recipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Recipe.h; path = "iOS-5-Recipes/Recipe.h"; sourceTree = "<group>"; };
+		129ED10014BAC77000E3DF63 /* Recipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Recipe.m; path = "iOS-5-Recipes/Recipe.m"; sourceTree = "<group>"; };
+		129ED10214BAC83600E3DF63 /* ImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageToDataTransformer.h; path = "iOS-5-Recipes/ImageToDataTransformer.h"; sourceTree = "<group>"; };
+		129ED10314BAC83600E3DF63 /* ImageToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageToDataTransformer.m; path = "iOS-5-Recipes/ImageToDataTransformer.m"; sourceTree = "<group>"; };
+		129ED10614BACAE600E3DF63 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129ED10714BACAE600E3DF63 /* CoreData.framework in Frameworks */,
 				129ED08B14BAB87700E3DF63 /* UIKit.framework in Frameworks */,
 				129ED08D14BAB87700E3DF63 /* Foundation.framework in Frameworks */,
 				129ED08F14BAB87700E3DF63 /* CoreGraphics.framework in Frameworks */,
@@ -50,7 +66,15 @@
 		129ED07B14BAB87700E3DF63 = {
 			isa = PBXGroup;
 			children = (
-				129ED09014BAB87700E3DF63 /* iOS-5-Recipes */,
+				129ED0A714BAB8C800E3DF63 /* README.txt */,
+				129ED0A914BAB8D200E3DF63 /* Model and Model Classes */,
+				129ED0AB14BABC5800E3DF63 /* MainWindow */,
+				129ED0AF14BABCA100E3DF63 /* Recipe View Controllers */,
+				129ED0AC14BABC6A00E3DF63 /* Converter View Controllers */,
+				129ED0AD14BABC8300E3DF63 /* Table Cells */,
+				129ED0AA14BAB8E400E3DF63 /* Images */,
+				129ED0AE14BABC9200E3DF63 /* Application Resources */,
+				129ED09014BAB87700E3DF63 /* Other Sources */,
 				129ED08914BAB87700E3DF63 /* Frameworks */,
 				129ED08714BAB87700E3DF63 /* Products */,
 			);
@@ -67,6 +91,7 @@
 		129ED08914BAB87700E3DF63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				129ED10614BACAE600E3DF63 /* CoreData.framework */,
 				129ED08A14BAB87700E3DF63 /* UIKit.framework */,
 				129ED08C14BAB87700E3DF63 /* Foundation.framework */,
 				129ED08E14BAB87700E3DF63 /* CoreGraphics.framework */,
@@ -74,7 +99,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		129ED09014BAB87700E3DF63 /* iOS-5-Recipes */ = {
+		129ED09014BAB87700E3DF63 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
 				129ED09914BAB87700E3DF63 /* AppDelegate.h */,
@@ -84,6 +109,7 @@
 				129ED0A014BAB87700E3DF63 /* ViewController.m */,
 				129ED09114BAB87700E3DF63 /* Supporting Files */,
 			);
+			name = "Other Sources";
 			path = "iOS-5-Recipes";
 			sourceTree = "<group>";
 		};
@@ -96,6 +122,62 @@
 				129ED09814BAB87700E3DF63 /* iOS-5-Recipes-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		129ED0A914BAB8D200E3DF63 /* Model and Model Classes */ = {
+			isa = PBXGroup;
+			children = (
+				129ED0D214BAC45F00E3DF63 /* Recipes.xcdatamodeld */,
+				129ED0FF14BAC77000E3DF63 /* Recipe.h */,
+				129ED10014BAC77000E3DF63 /* Recipe.m */,
+				129ED0FC14BAC77000E3DF63 /* Ingredient.h */,
+				129ED0FD14BAC77000E3DF63 /* Ingredient.m */,
+				129ED10214BAC83600E3DF63 /* ImageToDataTransformer.h */,
+				129ED10314BAC83600E3DF63 /* ImageToDataTransformer.m */,
+			);
+			name = "Model and Model Classes";
+			sourceTree = "<group>";
+		};
+		129ED0AA14BAB8E400E3DF63 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		129ED0AB14BABC5800E3DF63 /* MainWindow */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = MainWindow;
+			sourceTree = "<group>";
+		};
+		129ED0AC14BABC6A00E3DF63 /* Converter View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Converter View Controllers";
+			sourceTree = "<group>";
+		};
+		129ED0AD14BABC8300E3DF63 /* Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Table Cells";
+			sourceTree = "<group>";
+		};
+		129ED0AE14BABC9200E3DF63 /* Application Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Application Resources";
+			sourceTree = "<group>";
+		};
+		129ED0AF14BABCA100E3DF63 /* Recipe View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recipe View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +232,7 @@
 			files = (
 				129ED09514BAB87700E3DF63 /* InfoPlist.strings in Resources */,
 				129ED09E14BAB87700E3DF63 /* MainStoryboard.storyboard in Resources */,
+				129ED0A814BAB8C800E3DF63 /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +246,10 @@
 				129ED09714BAB87700E3DF63 /* main.m in Sources */,
 				129ED09B14BAB87700E3DF63 /* AppDelegate.m in Sources */,
 				129ED0A114BAB87700E3DF63 /* ViewController.m in Sources */,
+				129ED0D514BAC45F00E3DF63 /* Recipes.xcdatamodeld in Sources */,
+				129ED0FE14BAC77000E3DF63 /* Ingredient.m in Sources */,
+				129ED10114BAC77000E3DF63 /* Recipe.m in Sources */,
+				129ED10414BAC83600E3DF63 /* ImageToDataTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,8 +361,23 @@
 				129ED0A614BAB87700E3DF63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		129ED0D214BAC45F00E3DF63 /* Recipes.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				129ED0D314BAC45F00E3DF63 /* Recipes.xcdatamodel */,
+			);
+			currentVersion = 129ED0D314BAC45F00E3DF63 /* Recipes.xcdatamodel */;
+			name = Recipes.xcdatamodeld;
+			path = "iOS-5-Recipes/Recipes.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 129ED07D14BAB87700E3DF63 /* Project object */;
 }
