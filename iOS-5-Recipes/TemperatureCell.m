@@ -12,15 +12,6 @@
 
 @synthesize cLabel = _cLabel, fLabel = _fLabel, gLabel = _gLabel;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 - (void)setTemperatureDataFromDictionary:(NSDictionary *)temperatureDictionary {
     // Update text in labels from the dictionary
     self.cLabel.text = [temperatureDictionary objectForKey:@"c"];
