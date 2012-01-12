@@ -10,6 +10,7 @@
 #import "InstructionsViewController.h"
 #import "TypeSelectorViewController.h"
 #import "IngredientDetailViewController.h"
+#import "RecipePhotoViewController.h"
 
 #define TYPE_SECTION 0
 #define INGREDIENTS_SECTION 1
@@ -29,9 +30,47 @@
 @synthesize tableHeaderView, photoButton, nameTextField, overviewTextField, prepTimeTextField;
 
 - (void) photoTapped{
-    //todo
-    //...
+    if (self.isEditing){
+		UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+		imagePicker.delegate = self;
+		[self presentModalViewController:imagePicker animated:YES];
+    }else {
+        [self performSegueWithIdentifier:@"Show Recipe Photo" sender:self];
+    }
 }
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)selectedImage editingInfo:(NSDictionary *)editingInfo {
+	
+	// Delete any existing image.
+	NSManagedObject *oldImage = self.recipe.image;
+	if (oldImage != nil) {
+		[self.recipe.managedObjectContext deleteObject:oldImage];
+	}
+	
+    // Create an image object for the new image.
+	NSManagedObject *image = [NSEntityDescription insertNewObjectForEntityForName:@"Image" inManagedObjectContext:self.recipe.managedObjectContext];
+	self.recipe.image = image;
+    
+	// Set the image for the image managed object.
+	[image setValue:selectedImage forKey:@"image"];
+	
+	// Create a thumbnail version of the image for the recipe object.
+	CGSize size = selectedImage.size;
+	CGFloat ratio = 0;
+	if (size.width > size.height) {
+		ratio = 44.0 / size.width;
+	} else {
+		ratio = 44.0 / size.height;
+	}
+	CGRect rect = CGRectMake(0.0, 0.0, ratio * size.width, ratio * size.height);
+	
+	UIGraphicsBeginImageContext(rect.size);
+	[selectedImage drawInRect:rect];
+	self.recipe.thumbnailImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 
 - (void)updatePhotoButton {
 	/*
@@ -66,28 +105,9 @@
 
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-
 - (void) viewDidLoad
 {
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    [self udpateRecipe];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -106,6 +126,7 @@
 	[sortedIngredients sortUsingDescriptors:sortDescriptors];
 	self.ingredients = sortedIngredients;
 	
+    [self udpateRecipe];
 	// Update recipe type and ingredients on return.
     [self.tableView reloadData];
 }
@@ -284,11 +305,13 @@
         case INSTRUCTIONS_SECTION:
             [self performSegueWithIdentifier:@"Show Recipe Instractions" sender:self];
             break;
-        case INGREDIENTS_SECTION:
-            self.currentIngredient = [self.ingredients objectAtIndex:indexPath.row];
+        case INGREDIENTS_SECTION:            
             if (indexPath.row < [self.recipe.ingredients count]) {
-                [self performSegueWithIdentifier:@"Show Ingrdient Detail" sender:self];
+                self.currentIngredient = [self.ingredients objectAtIndex:indexPath.row];                
+            }else{
+                self.currentIngredient = nil;
             }
+            [self performSegueWithIdentifier:@"Show Ingrdient Detail" sender:self];
     }
 }
 
@@ -305,6 +328,9 @@
         IngredientDetailViewController *ingredientDetailViewControoler = (IngredientDetailViewController*)segue.destinationViewController;
         ingredientDetailViewControoler.recipe = self.recipe;
         ingredientDetailViewControoler.ingredient = self.currentIngredient;
+    } else if ([segue.identifier isEqualToString:@"Show Recipe Photo"]) {
+        RecipePhotoViewController* recipePhotoViewController = (RecipePhotoViewController*)segue.destinationViewController;
+        recipePhotoViewController.recipe = self.recipe;
     }
 }
 
@@ -350,6 +376,28 @@
     }
     
 }
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+	
+	if (textField == nameTextField) {
+		self.recipe.name = nameTextField.text;
+		self.navigationItem.title = self.recipe.name;
+	}
+	else if (textField == overviewTextField) {
+		self.recipe.overview = overviewTextField.text;
+	}
+	else if (textField == prepTimeTextField) {
+		self.recipe.prepTime = prepTimeTextField.text;
+	}
+	return YES;
+}
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	return YES;
+}
+
 
 
 

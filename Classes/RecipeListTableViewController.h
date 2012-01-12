@@ -7,14 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RecipeAddViewController.h"
+#import "AppDelegate.h"
 
 @class Recipe;
 @class RecipeTableViewCell;
 
-@interface RecipeListTableViewController : UITableViewController<NSFetchedResultsControllerDelegate>
+@interface RecipeListTableViewController : UITableViewController<NSFetchedResultsControllerDelegate, RecipeAddDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
+
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) UIManagedDocument *recipeDatabase;
 
 
 

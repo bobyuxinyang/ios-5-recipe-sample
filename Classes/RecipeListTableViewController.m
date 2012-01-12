@@ -9,6 +9,7 @@
 #import "RecipeListTableViewController.h"
 #import "RecipeTableViewCell.h"
 #import "RecipeDetailViewController.h"
+#import "RecipeAddViewController.h"
 #import "AppDelegate.h"
 
 @interface RecipeListTableViewController()
@@ -22,69 +23,142 @@
 @synthesize managedObjectContext = _managedObjectContext;
 
 @synthesize selectedRecipe = _selectedRecipe;
+@synthesize recipeDatabase = _recipeDatabase;
+
+- (void) setupFecthedResult {
+    self.managedObjectContext = self.recipeDatabase.managedObjectContext;
+  
+    // Create the fetch request for the entity.
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Recipe" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+
+
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
+    aFetchedResultsController.delegate = self;
+    _fetchedResultsController = aFetchedResultsController;    
+    
+    
+    NSError *error = nil;
+   	if (![[self fetchedResultsController] performFetch:&error]) {
+   		/*
+   		 Replace this implementation with code to handle the error appropriately.
+   		 
+   		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+   		 */
+   		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+   		abort();
+   	}    
+    
+    [self.tableView reloadData];
+}
+
+
+- (void) useDocument
+{    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[self.recipeDatabase.fileURL path]]) {
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];  
+        NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Recipes" ofType:@"sqlite"];
+        
+        if ([fileManager fileExistsAtPath:defaultStorePath]) {
+            
+            // copy the default database to the store directoryt
+            NSURL *storeURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+            storeURL = [storeURL URLByAppendingPathComponent:@"Recipes/StoreContent"];
+            NSError *error = nil;
+            if (![fileManager createDirectoryAtURL:storeURL withIntermediateDirectories:YES attributes:nil error:&error]) {
+                NSLog(@"unresolved error: %@, %@", error, error.userInfo);
+            }            
+            NSURL *finalurl = [storeURL URLByAppendingPathComponent:@"persistentStore"];            
+            if (![fileManager moveItemAtPath:defaultStorePath toPath:[finalurl path] error:&error]) {
+                NSLog(@"unresolved error: %@, %@", error, error.userInfo);                
+            }
+            
+            
+            [self.recipeDatabase openWithCompletionHandler:^(BOOL success) {
+                [self setupFecthedResult];
+            } ];
+        } else {
+            [self.recipeDatabase saveToURL:self.recipeDatabase.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:         
+             ^(BOOL success) {
+                 [self setupFecthedResult];
+             }];            
+        }
+        
+    } else if (self.recipeDatabase.documentState == UIDocumentStateClosed) {
+        [self.recipeDatabase openWithCompletionHandler:^(BOOL success) {
+            [self setupFecthedResult];
+        } ];
+    } else if (self.recipeDatabase.documentState == UIDocumentStateNormal) {
+        [self setupFecthedResult];
+    }
+}
+
+- (void) setRecipeDatabase:(UIManagedDocument *)recipeDatabase
+{
+    if (_recipeDatabase != recipeDatabase) {
+        _recipeDatabase = recipeDatabase;
+        [self useDocument];
+    }
+}
+
+- (void) setupRecipeDatabase
+{
+    if (!self.recipeDatabase) {
+        NSURL* url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+        url = [url URLByAppendingPathComponent:@"Recipes"];
+        self.recipeDatabase = [[UIManagedDocument alloc] initWithFileURL:url];
+    }
+}
 
 - (void) viewDidLoad
 {
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;    
     
-    NSError *error = nil;
-	if (![[self fetchedResultsController] performFetch:&error]) {
-		/*
-		 Replace this implementation with code to handle the error appropriately.
-		 
-		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-		 */
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}
+    [self setupRecipeDatabase];
+
 }
 
-
-- (NSManagedObjectContext *)managedObjectContext 
-{
-    if (_managedObjectContext == nil) {
-        _managedObjectContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
-    }
-    return _managedObjectContext;
+- (IBAction)add:(id)sender {    
+    [self performSegueWithIdentifier:@"Add Recipe" sender:self];    
 }
-
-- (NSFetchedResultsController *)fetchedResultsController {
-    // Set up the fetched results controller if needed.
-    if (_fetchedResultsController == nil) {
-        // Create the fetch request for the entity.
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
-        // Edit the entity name as appropriate.
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Recipe" inManagedObjectContext:self.managedObjectContext];
-        [fetchRequest setEntity:entity];
-        
-        // Edit the sort key as appropriate.
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        
-        
-        // Edit the section name key path and cache name if appropriate.
-        // nil for section name key path means "no sections".
-        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
-        aFetchedResultsController.delegate = self;
-        _fetchedResultsController = aFetchedResultsController;
-    }
-	
-	return _fetchedResultsController;
-}    
-
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString: @"Show Recipe Detail"]) {
-        RecipeDetailViewController* recipeDetailViewController = (RecipeDetailViewController*) segue.destinationViewController;
+        RecipeDetailViewController *recipeDetailViewController = (RecipeDetailViewController*) segue.destinationViewController;
         recipeDetailViewController.recipe = self.selectedRecipe;
+    } if ([segue.identifier isEqualToString:@"Add Recipe"]) {
+        RecipeAddViewController *recipeAddViewController = (RecipeAddViewController*) ((UINavigationController*) segue.destinationViewController).topViewController;
+
+        // add a recipe object to context
+        Recipe *newRecipe = [NSEntityDescription insertNewObjectForEntityForName:@"Recipe" inManagedObjectContext:self.managedObjectContext];
+        
+        recipeAddViewController.recipe = newRecipe;
+        recipeAddViewController.delegate = self;        
     }
 }
 
+- (void) recipeAddViewController:(RecipeAddViewController *)recipeAddViewController didAddRecipe:(Recipe *)recipe
+{
+    [self dismissModalViewControllerAnimated:YES];
+    if (recipe) {
+        self.selectedRecipe = recipe;
+        [self performSegueWithIdentifier:@"Show Recipe Detail" sender:self];
+    }
 
+}
 
 
 #pragma mark - Table view data source

@@ -12,26 +12,8 @@
 
 @implementation IngredientDetailViewController
 
-
 @synthesize recipe = _recipe;
 @synthesize ingredient = _ingredient;
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 
 #pragma mark - View lifecycle
 
@@ -165,6 +147,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
 - (IBAction)saveEdit:(id)sender {
 	
 	NSManagedObjectContext *context = [self.recipe managedObjectContext];
@@ -205,4 +188,10 @@
 	
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    return nil;
+}
+
 @end

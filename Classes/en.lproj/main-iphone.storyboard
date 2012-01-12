@@ -366,14 +366,81 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Recipes" id="NCE-Oe-mHS">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="XwP-iw-dQg"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="XwP-iw-dQg">
+                            <connections>
+                                <action selector="add:" destination="WNl-EM-WPQ" id="Rbs-di-oAm"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="J6B-yp-KXe" kind="push" identifier="Show Recipe Detail" id="1ZM-Cx-DqT"/>
+                        <segue destination="suK-f4-f8m" kind="modal" identifier="Add Recipe" id="7py-Ee-zsc"/>
                     </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="1142" y="653"/>
+        </scene>
+        <scene sceneID="xhw-12-2gM">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IXu-yd-uvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController hidesBottomBarWhenPushed="YES" id="hWC-96-JZS" customClass="RecipePhotoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eQk-F2-gXm">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="df8-5L-DVk">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="df8-5L-DVk" id="8Z4-LN-Q8y"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2127" y="1141"/>
+        </scene>
+        <scene sceneID="VX2-JU-qyL">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Y9-Gm-olN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="dyF-ae-Os4" customClass="RecipeAddViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="z3G-5P-eWS">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Recipe Name" minimumFontSize="17" id="zOi-4f-qIU">
+                                <rect key="frame" x="40" y="58" width="241" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="dyF-ae-Os4" id="JBF-zQ-dGe"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="bYL-bG-qiJ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="zOC-na-3ne">
+                            <connections>
+                                <action selector="cancel:" destination="dyF-ae-Os4" id="Ppm-Lk-qto"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="bbo-0z-BTK">
+                            <connections>
+                                <action selector="save:" destination="dyF-ae-Os4" id="UQK-DP-pef"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="nameTextField" destination="zOi-4f-qIU" id="Mq4-lm-Bwa"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1768" y="1387"/>
         </scene>
         <scene sceneID="bdC-G9-8f1">
             <objects>
@@ -399,7 +466,7 @@
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                     <connections>
-                                        <action selector="photoTapped" destination="J6B-yp-KXe" eventType="touchUpInside" id="LV1-b1-EuF"/>
+                                        <action selector="photoTapped" destination="J6B-yp-KXe" eventType="touchUpInside" id="hcr-W6-1uU"/>
                                     </connections>
                                 </button>
                                 <textField opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recipe Name" minimumFontSize="17" id="MDI-z6-KNJ">
@@ -407,18 +474,27 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="J6B-yp-KXe" id="VBq-Gq-mgQ"/>
+                                    </connections>
                                 </textField>
                                 <textField opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" minimumFontSize="17" id="eaU-ju-PcS">
                                     <rect key="frame" x="92" y="37" width="208" height="28"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="J6B-yp-KXe" id="Oxl-Y9-cgH"/>
+                                    </connections>
                                 </textField>
                                 <textField opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Time" minimumFontSize="17" id="qr4-sd-8nW">
                                     <rect key="frame" x="128" y="81" width="172" height="28"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="J6B-yp-KXe" id="FNx-iP-Gu5"/>
+                                    </connections>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Preparation time:" lineBreakMode="tailTruncation" minimumFontSize="10" id="qMO-lc-laU">
                                     <rect key="frame" x="20" y="84" width="110" height="21"/>
@@ -485,12 +561,14 @@
                     <connections>
                         <outlet property="nameTextField" destination="MDI-z6-KNJ" id="NR7-Kw-ukq"/>
                         <outlet property="overviewTextField" destination="eaU-ju-PcS" id="wxi-3V-Rf6"/>
+                        <outlet property="photoButton" destination="F3A-Sl-Y2S" id="eeC-HN-WS7"/>
                         <outlet property="prepTimeTextField" destination="qr4-sd-8nW" id="anR-ma-4e7"/>
                         <outlet property="tableHeaderView" destination="h1I-Ma-7kj" id="bfn-6c-Y9F"/>
                         <outlet property="view" destination="dcB-EN-zaQ" id="m2f-z5-CU5"/>
                         <segue destination="tdW-gA-zlq" kind="push" identifier="Show Recipe Instractions" id="jlG-EW-lOl"/>
                         <segue destination="5oB-Kh-0GG" kind="push" identifier="Show Recipe Types Selector" id="rWw-B2-7aY"/>
                         <segue destination="eiC-mY-ee2" kind="push" identifier="Show Ingrdient Detail" id="D5o-uG-6Ml"/>
+                        <segue destination="hWC-96-JZS" kind="push" identifier="Show Recipe Photo" id="sVs-4r-q1w"/>
                     </connections>
                 </tableViewController>
             </objects>
@@ -547,7 +625,7 @@
                                     <rect key="frame" x="10" y="1" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="m7d-ed-2dP">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="always" id="m7d-ed-2dP">
                                             <rect key="frame" x="107" y="6" width="180" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -572,7 +650,7 @@
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="eiC-mY-ee2" id="j4S-cu-isr"/>
-                            <outlet property="delegate" destination="eiC-mY-ee2" id="kEd-sO-gjP"/>
+                            <outlet property="delegate" destination="eiC-mY-ee2" id="35U-hU-PYX"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="ffq-9T-mGR">
@@ -589,7 +667,7 @@
                     </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1556" y="1389"/>
+            <point key="canvasLocation" x="3094" y="1053"/>
         </scene>
         <scene sceneID="2Kd-sl-PRx">
             <objects>
@@ -618,7 +696,24 @@
                     <navigationItem key="navigationItem" id="1Ct-Nu-302"/>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1979" y="1141"/>
+            <point key="canvasLocation" x="2505" y="1141"/>
+        </scene>
+        <scene sceneID="3YF-YO-xNt">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JWc-qi-Quc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="suK-f4-f8m" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="b4R-4H-xuQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dyF-ae-Os4" kind="relationship" relationship="rootViewController" id="4Vm-Is-q3M"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="995" y="1480"/>
         </scene>
     </scenes>
     <resources>
@@ -662,6 +757,12 @@
                 <relationship kind="outlet" name="pickerView" candidateClass="UIPickerView"/>
             </relationships>
         </class>
+        <class className="RecipeAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RecipeAddViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
         <class className="RecipeDetailViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RecipeDetailViewController.h"/>
             <relationships>
@@ -675,6 +776,12 @@
         </class>
         <class className="RecipeListTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RecipeListTableViewController.h"/>
+        </class>
+        <class className="RecipePhotoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RecipePhotoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+            </relationships>
         </class>
         <class className="RecipeTableViewCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RecipeTableViewCell.h"/>
