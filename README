@@ -1,0 +1,13 @@
+
+iPhoneCoreDataRecipes for iOS 5
+
+"iPhoneCoreDataRecipes" is a nice sample code for iOS learner, but it's for iOS4 now (1/2012)
+You can find that here: http://developer.apple.com/library/iOS/#samplecode/iPhoneCoreDataRecipes/Introduction/Intro.html#//apple_ref/doc/uid/DTS40008913
+
+I try to make a copy of that using iOS5 features, like:
+
+Storyboard & Segques for UIs
+UIManagedDocument for CoreData
+
+Enjoy.
+
