@@ -13,42 +13,6 @@
 @synthesize recipe = _recipe;
 @synthesize nameLabel = _nameLabel, instructionsText = _instructionsText;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-#pragma mark - View lifecycle
-
-- (void) viewDidLoad
-{
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    self.nameLabel.text = self.recipe.name;
-    self.instructionsText.text = self.recipe.instructions;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated
 {
@@ -69,5 +33,24 @@
     }
 }
 
+
+#pragma mark - View lifecycle
+
+- (void) viewDidLoad
+{
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    self.nameLabel.text = self.recipe.name;
+    self.instructionsText.text = self.recipe.instructions;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
 
 @end

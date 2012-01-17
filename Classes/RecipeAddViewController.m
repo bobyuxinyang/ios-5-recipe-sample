@@ -8,6 +8,8 @@
 
 #import "RecipeAddViewController.h"
 
+@interface RecipeAddViewController() <UITextFieldDelegate>
+@end
 
 @implementation RecipeAddViewController
 
@@ -44,6 +46,8 @@
     [self.delegate recipeAddViewController:self didAddRecipe:nil];
 }
 
+
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -65,32 +69,13 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - TextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.nameTextField) {

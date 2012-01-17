@@ -12,6 +12,8 @@
 
 @synthesize pickerView = _pickerView, label = _label;
 
+#pragma mark --UITableView DataSource
+
 // Identifiers and widths for the various components
 #define POUNDS_COMPONENT 0
 #define POUNDS_COMPONENT_WIDTH 110
@@ -21,27 +23,10 @@
 #define OUNCES_COMPONENT_WIDTH 106
 #define OUNCES_LABEL_WIDTH 56
 
-
 // Identifies for component views
 #define VIEW_TAG 41
 #define SUB_LABEL_TAG 42
 #define LABEL_TAG 43
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-	
-	return 2;
-}
-
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-	
-	// Number of rows depends on the currently-selected unit and the component.
-    if (component == POUNDS_COMPONENT) {
-		return 29;
-	}
-	// OUNCES_LABEL_COMPONENT
-	return 16;
-}
 
 
 - (UIView *)labelCellWithWidth:(CGFloat)width rightOffset:(CGFloat)offset {
@@ -63,6 +48,61 @@
 	[view addSubview:subLabel];
 	return view;
 }
+
+
+- (void)updateLabel {
+    
+    /*
+     If the user has entered imperial units, find the number of pounds and ounces and convert that to kilograms and grams.
+     Don't display 0 kg.
+     */
+    NSInteger ounces = [self.pickerView selectedRowInComponent:OUNCES_COMPONENT];
+    ounces += [self.pickerView selectedRowInComponent:POUNDS_COMPONENT] * 16;
+    
+    float grams = ounces * 28.349;
+    if (grams > 1000.0) {
+        NSInteger kg = grams / 1000;
+        grams -= kg *1000;
+        self.label.text = [NSString stringWithFormat:@"%d kg  %1.0f g", kg, grams];
+    }
+	else {
+        self.label.text = [NSString stringWithFormat:@"%1.0f g", grams];
+    }
+}
+
+
+
+#pragma mark -- UIPickView Datasource
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+	
+	// Number of rows depends on the currently-selected unit and the component.
+    if (component == POUNDS_COMPONENT) {
+		return 29;
+	}
+	// OUNCES_LABEL_COMPONENT
+	return 16;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+	
+	return 2;
+}
+
+
+
+
+#pragma mark -- UIPickView Delegate
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+	
+	if (component == POUNDS_COMPONENT) {
+		return POUNDS_COMPONENT_WIDTH;
+	}
+	// OUNCES_COMPONENT
+	return OUNCES_COMPONENT_WIDTH;
+}
+
+
 
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
@@ -99,40 +139,9 @@
 }
 
 
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-	
-	if (component == POUNDS_COMPONENT) {
-		return POUNDS_COMPONENT_WIDTH;
-	}
-	// OUNCES_COMPONENT
-	return OUNCES_COMPONENT_WIDTH;
-}
-
-
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	// If the user chooses a new row, update the label accordingly.
 	[self updateLabel];
-}
-
-
-- (void)updateLabel {
-    
-    /*
-     If the user has entered imperial units, find the number of pounds and ounces and convert that to kilograms and grams.
-     Don't display 0 kg.
-     */
-    NSInteger ounces = [self.pickerView selectedRowInComponent:OUNCES_COMPONENT];
-    ounces += [self.pickerView selectedRowInComponent:POUNDS_COMPONENT] * 16;
-    
-    float grams = ounces * 28.349;
-    if (grams > 1000.0) {
-        NSInteger kg = grams / 1000;
-        grams -= kg *1000;
-        self.label.text = [NSString stringWithFormat:@"%d kg  %1.0f g", kg, grams];
-    }
-	else {
-        self.label.text = [NSString stringWithFormat:@"%1.0f g", grams];
-    }
 }
 
 

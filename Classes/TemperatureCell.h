@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface TemperatureCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *cLabel;
-@property (weak, nonatomic) IBOutlet UILabel *fLabel;
-@property (weak, nonatomic) IBOutlet UILabel *gLabel;
+@property (strong, nonatomic) IBOutlet UILabel *cLabel;
+@property (strong, nonatomic) IBOutlet UILabel *fLabel;
+@property (strong, nonatomic) IBOutlet UILabel *gLabel;
 
 - (void)setTemperatureDataFromDictionary:(NSDictionary *)temperatureDictionary;
 

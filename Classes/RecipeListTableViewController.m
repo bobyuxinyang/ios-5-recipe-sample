@@ -25,6 +25,8 @@
 @synthesize selectedRecipe = _selectedRecipe;
 @synthesize recipeDatabase = _recipeDatabase;
 
+
+#pragma mark -- UIManagedDocument
 - (void) setupFecthedResult {
     self.managedObjectContext = self.recipeDatabase.managedObjectContext;
   
@@ -68,6 +70,9 @@
     if (![[NSFileManager defaultManager] fileExistsAtPath:[self.recipeDatabase.fileURL path]]) {
         
         NSFileManager *fileManager = [NSFileManager defaultManager];  
+        // todo: here i need iCloud
+//        NSURL *cloudStr = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+//        NSLog(@"Cloud URL: %@", [cloudStr path]);
         NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Recipes" ofType:@"sqlite"];
         
         if ([fileManager fileExistsAtPath:defaultStorePath]) {
@@ -121,6 +126,8 @@
     }
 }
 
+#pragma mark -- view lifecycle
+
 - (void) viewDidLoad
 {
     self.navigationItem.leftBarButtonItem = self.editButtonItem;    
@@ -150,6 +157,8 @@
     }
 }
 
+#pragma mark -- RecipeAddDelegate
+
 - (void) recipeAddViewController:(RecipeAddViewController *)recipeAddViewController didAddRecipe:(Recipe *)recipe
 {
     [self dismissModalViewControllerAnimated:YES];
@@ -157,11 +166,18 @@
         self.selectedRecipe = recipe;
         [self performSegueWithIdentifier:@"Show Recipe Detail" sender:self];
     }
-
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	Recipe *recipe = (Recipe *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.selectedRecipe = recipe;
+    [self performSegueWithIdentifier:@"Show Recipe Detail" sender:self];
+}
+
+#pragma mark -- TableView DataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger count = [[self.fetchedResultsController sections] count];
@@ -172,13 +188,11 @@
     return count;
 }
 
-
 - (void)configureCell:(RecipeTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     // Configure the cell
 	Recipe *recipe = (Recipe *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.recipe = recipe;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger numberOfRows = 0;
@@ -191,23 +205,6 @@
     return numberOfRows;
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Dequeue or if necessary create a RecipeTableViewCell, then set its recipe to the recipe for the current row.
-    static NSString *RecipeCellIdentifier = @"RecipeCellIdentifier";
-    
-    RecipeTableViewCell *recipeCell = (RecipeTableViewCell *)[tableView dequeueReusableCellWithIdentifier:RecipeCellIdentifier];
-    if (recipeCell == nil) {
-        recipeCell = [[RecipeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecipeCellIdentifier];
-		recipeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    
-	[self configureCell:recipeCell atIndexPath:indexPath];
-    
-    return recipeCell;
-}
-
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the managed object for the given index path
@@ -225,11 +222,31 @@
 			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
-	}   
+	} else {
+        if (editingStyle == UITableViewCellEditingStyleInsert) {
+            NSLog(@"Sth...");
+        }
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Dequeue or if necessary create a RecipeTableViewCell, then set its recipe to the recipe for the current row.
+    static NSString *RecipeCellIdentifier = @"RecipeCellIdentifier";
+    
+    RecipeTableViewCell *recipeCell = (RecipeTableViewCell *)[tableView dequeueReusableCellWithIdentifier:RecipeCellIdentifier];
+    if (recipeCell == nil) {
+        recipeCell = [[RecipeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecipeCellIdentifier];
+		recipeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+	[self configureCell:recipeCell atIndexPath:indexPath];
+    
+    return recipeCell;
 }
 
 
 
+#pragma -- NSFetchedResultsController Delegate
 /**
  Delegate methods of NSFetchedResultsController to respond to additions, removals and so on.
  */
@@ -281,12 +298,6 @@
 }
 
 
-#pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	Recipe *recipe = (Recipe *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-    self.selectedRecipe = recipe;
-    [self performSegueWithIdentifier:@"Show Recipe Detail" sender:self];
-}
 
 @end

@@ -15,9 +15,10 @@
 - (void)recipeAddViewController:(RecipeAddViewController *)recipeAddViewController didAddRecipe: (Recipe*) recipe;
 @end
 
-@interface RecipeAddViewController : UIViewController<UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@interface RecipeAddViewController : UIViewController
 @property (nonatomic, strong) Recipe* recipe;
+
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (nonatomic, strong) id<RecipeAddDelegate> delegate;
 @end
 

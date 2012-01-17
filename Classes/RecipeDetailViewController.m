@@ -38,6 +38,62 @@
         [self performSegueWithIdentifier:@"Show Recipe Photo" sender:self];
     }
 }
+
+- (void)updatePhotoButton {
+	/*
+	 How to present the photo button depends on the editing state and whether the recipe has a thumbnail image.
+	 * If the recipe has a thumbnail, set the button's highlighted state to the same as the editing state (it's highlighted if editing).
+	 * If the recipe doesn't have a thumbnail, then: if editing, enable the button and show an image that says "Choose Photo" or similar; if not editing then disable the button and show nothing.  
+	 */
+	BOOL editing = self.editing;
+	
+	if (self.recipe.thumbnailImage != nil) {
+		photoButton.highlighted = editing;
+	} else {
+		photoButton.enabled = editing;
+		
+		if (editing) {
+			[photoButton setImage:[UIImage imageNamed:@"choosePhoto.png"] forState:UIControlStateNormal];
+		} else {
+			[photoButton setImage:nil forState:UIControlStateNormal];
+		}
+	}
+}
+
+- (void) udpateRecipe
+{
+    [photoButton setImage:_recipe.thumbnailImage forState:UIControlStateNormal];
+    self.navigationItem.title = _recipe.name;
+    nameTextField.text = _recipe.name;    
+    overviewTextField.text = _recipe.overview;    
+    prepTimeTextField.text = _recipe.prepTime;    
+    [self updatePhotoButton];   
+}
+
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Show Recipe Instractions"])
+    {
+        InstructionsViewController *instructionsViewController = (InstructionsViewController*)segue.destinationViewController;
+        instructionsViewController.recipe = self.recipe;
+    } else if ([segue.identifier isEqualToString:@"Show Recipe Types Selector"]) {
+        TypeSelectorViewController *typeSelectorViewController = (TypeSelectorViewController*)segue.destinationViewController;
+        typeSelectorViewController.recipe = self.recipe;
+    } else if ([segue.identifier isEqualToString:@"Show Ingrdient Detail"]) {
+        IngredientDetailViewController *ingredientDetailViewControoler = (IngredientDetailViewController*)segue.destinationViewController;
+        ingredientDetailViewControoler.recipe = self.recipe;
+        ingredientDetailViewControoler.ingredient = self.currentIngredient;
+    } else if ([segue.identifier isEqualToString:@"Show Recipe Photo"]) {
+        RecipePhotoViewController* recipePhotoViewController = (RecipePhotoViewController*)segue.destinationViewController;
+        recipePhotoViewController.recipe = self.recipe;
+    }
+}
+
+
+
+
+#pragma mark -- UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)selectedImage editingInfo:(NSDictionary *)editingInfo {
 	
 	// Delete any existing image.
@@ -72,38 +128,7 @@
 }
 
 
-- (void)updatePhotoButton {
-	/*
-	 How to present the photo button depends on the editing state and whether the recipe has a thumbnail image.
-	 * If the recipe has a thumbnail, set the button's highlighted state to the same as the editing state (it's highlighted if editing).
-	 * If the recipe doesn't have a thumbnail, then: if editing, enable the button and show an image that says "Choose Photo" or similar; if not editing then disable the button and show nothing.  
-	 */
-	BOOL editing = self.editing;
-	
-	if (self.recipe.thumbnailImage != nil) {
-		photoButton.highlighted = editing;
-	} else {
-		photoButton.enabled = editing;
-		
-		if (editing) {
-			[photoButton setImage:[UIImage imageNamed:@"choosePhoto.png"] forState:UIControlStateNormal];
-		} else {
-			[photoButton setImage:nil forState:UIControlStateNormal];
-		}
-	}
-}
-
-- (void) udpateRecipe
-{
-    [photoButton setImage:_recipe.thumbnailImage forState:UIControlStateNormal];
-    self.navigationItem.title = _recipe.name;
-    nameTextField.text = _recipe.name;    
-    overviewTextField.text = _recipe.overview;    
-    prepTimeTextField.text = _recipe.prepTime;    
-    [self updatePhotoButton];   
-}
-
-
+#pragma mark -- view lifecycle
 
 - (void) viewDidLoad
 {
@@ -257,6 +282,12 @@
     return cell;
 }
 
+
+
+#pragma mark -
+#pragma mark Editing rows
+
+
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCellEditingStyle style = UITableViewCellEditingStyleNone;
     // Only allow editing in the ingredients section.
@@ -272,66 +303,6 @@
     }
     
     return style;
-}
-
-
-
-#pragma mark -
-#pragma mark Editing rows
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-	NSIndexPath *rowToSelect = indexPath;
-    NSInteger section = indexPath.section;
-    BOOL isEditing = self.editing;
-    
-    // If editing, don't allow instructions to be selected
-    // Not editing: Only allow instructions to be selected
-    if ((isEditing && section == INSTRUCTIONS_SECTION) || (!isEditing && section != INSTRUCTIONS_SECTION)) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        rowToSelect = nil;    
-    }
-	return rowToSelect;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger section = indexPath.section;
-
-    switch (section) {
-        case TYPE_SECTION:
-            [self performSegueWithIdentifier:@"Show Recipe Types Selector" sender:self];
-            break;			
-        case INSTRUCTIONS_SECTION:
-            [self performSegueWithIdentifier:@"Show Recipe Instractions" sender:self];
-            break;
-        case INGREDIENTS_SECTION:            
-            if (indexPath.row < [self.recipe.ingredients count]) {
-                self.currentIngredient = [self.ingredients objectAtIndex:indexPath.row];                
-            }else{
-                self.currentIngredient = nil;
-            }
-            [self performSegueWithIdentifier:@"Show Ingrdient Detail" sender:self];
-    }
-}
-
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"Show Recipe Instractions"])
-    {
-        InstructionsViewController *instructionsViewController = (InstructionsViewController*)segue.destinationViewController;
-        instructionsViewController.recipe = self.recipe;
-    } else if ([segue.identifier isEqualToString:@"Show Recipe Types Selector"]) {
-        TypeSelectorViewController *typeSelectorViewController = (TypeSelectorViewController*)segue.destinationViewController;
-        typeSelectorViewController.recipe = self.recipe;
-    } else if ([segue.identifier isEqualToString:@"Show Ingrdient Detail"]) {
-        IngredientDetailViewController *ingredientDetailViewControoler = (IngredientDetailViewController*)segue.destinationViewController;
-        ingredientDetailViewControoler.recipe = self.recipe;
-        ingredientDetailViewControoler.ingredient = self.currentIngredient;
-    } else if ([segue.identifier isEqualToString:@"Show Recipe Photo"]) {
-        RecipePhotoViewController* recipePhotoViewController = (RecipePhotoViewController*)segue.destinationViewController;
-        recipePhotoViewController.recipe = self.recipe;
-    }
 }
 
 
@@ -377,27 +348,43 @@
     
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-	
-	if (textField == nameTextField) {
-		self.recipe.name = nameTextField.text;
-		self.navigationItem.title = self.recipe.name;
-	}
-	else if (textField == overviewTextField) {
-		self.recipe.overview = overviewTextField.text;
-	}
-	else if (textField == prepTimeTextField) {
-		self.recipe.prepTime = prepTimeTextField.text;
-	}
-	return YES;
+
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	NSIndexPath *rowToSelect = indexPath;
+    NSInteger section = indexPath.section;
+    BOOL isEditing = self.editing;
+    
+    // If editing, don't allow instructions to be selected
+    // Not editing: Only allow instructions to be selected
+    if ((isEditing && section == INSTRUCTIONS_SECTION) || (!isEditing && section != INSTRUCTIONS_SECTION)) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        rowToSelect = nil;    
+    }
+	return rowToSelect;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSInteger section = indexPath.section;
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[textField resignFirstResponder];
-	return YES;
+    switch (section) {
+        case TYPE_SECTION:
+            [self performSegueWithIdentifier:@"Show Recipe Types Selector" sender:self];
+            break;			
+        case INSTRUCTIONS_SECTION:
+            [self performSegueWithIdentifier:@"Show Recipe Instractions" sender:self];
+            break;
+        case INGREDIENTS_SECTION:            
+            if (indexPath.row < [self.recipe.ingredients count]) {
+                self.currentIngredient = [self.ingredients objectAtIndex:indexPath.row];                
+            }else{
+                self.currentIngredient = nil;
+            }
+            [self performSegueWithIdentifier:@"Show Ingrdient Detail" sender:self];
+    }
 }
-
 
 
 
@@ -463,6 +450,28 @@
 	}
 }
 
+#pragma mark --TextFieldDelegate
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+	
+	if (textField == nameTextField) {
+		self.recipe.name = nameTextField.text;
+		self.navigationItem.title = self.recipe.name;
+	}
+	else if (textField == overviewTextField) {
+		self.recipe.overview = overviewTextField.text;
+	}
+	else if (textField == prepTimeTextField) {
+		self.recipe.prepTime = prepTimeTextField.text;
+	}
+	return YES;
+}
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	return YES;
+}
 
 
 @end

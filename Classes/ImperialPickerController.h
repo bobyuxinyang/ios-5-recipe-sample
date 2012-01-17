@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface ImperialPickerController : NSObject<UIPickerViewDataSource, UIPickerViewDelegate>
-@property (weak, nonatomic) IBOutlet UIPickerView* pickerView;
-@property (weak, nonatomic) IBOutlet UILabel* label;
+@property (strong, nonatomic) IBOutlet UIPickerView* pickerView;
+@property (strong, nonatomic) IBOutlet UILabel* label;
 
 - (void) updateLabel;
 @end

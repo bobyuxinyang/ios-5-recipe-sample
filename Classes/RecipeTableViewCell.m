@@ -12,9 +12,6 @@
 @synthesize imageView = __imageView, nameLabel = _nameLabel, overviewLabel = _overviewLabel, prepTimeLabel = _prepTimeLabel;
 @synthesize recipe = _recipe;
 
-
-
-
 #pragma mark -
 #pragma mark Laying out subviews
 
